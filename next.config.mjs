@@ -5,14 +5,18 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname:
-          "aws-nextjs-2-florianheysen-mybucket-btbdbzaf.s3.us-east-1.amazonaws.com",
+        hostname: "cdn-dev-uploads-mdsbmxre.s3.us-east-1.amazonaws.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "v0.dev",
         port: "",
         pathname: "/**",
       },
     ],
   },
-  // ...
 };
 
 export default nextConfig;

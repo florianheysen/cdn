@@ -5,13 +5,13 @@ import "sst"
 export {}
 declare module "sst" {
   export interface Resource {
-    "MyBucket": {
-      "name": string
-      "type": "sst.aws.Bucket"
-    }
-    "MyWeb": {
+    "frontend": {
       "type": "sst.aws.Nextjs"
       "url": string
+    }
+    "uploads": {
+      "name": string
+      "type": "sst.aws.Bucket"
     }
   }
 }

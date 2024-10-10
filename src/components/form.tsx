@@ -1,6 +1,27 @@
 "use client";
 
-export default function Form({ url }: { url: string }) {
+import { useQuery } from "@tanstack/react-query";
+
+const fetchUrl = async () => {
+  const response = await fetch("/api/url");
+  if (!response.ok) {
+    throw new Error("Erreur lors de la récupération de l'URL");
+  }
+  return response.json();
+};
+
+export default function Form() {
+  const {
+    data: url,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["url"],
+    queryFn: fetchUrl,
+  });
+
+  if (isLoading) return <div>Loading...</div>;
+
   return (
     <form
       onSubmit={async (e) => {
