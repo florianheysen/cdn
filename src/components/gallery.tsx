@@ -2,6 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
+import { Button } from "./ui/button";
 
 const fetchKeys = async () => {
   const response = await fetch("/api/keys");
@@ -16,6 +17,7 @@ const ImageGallery = ({ bucketName }: { bucketName: string }) => {
     data: keys,
     isLoading,
     isFetching,
+    refetch,
   } = useQuery({
     queryKey: ["keys"],
     queryFn: fetchKeys,
@@ -26,7 +28,10 @@ const ImageGallery = ({ bucketName }: { bucketName: string }) => {
 
   return (
     <div>
-      {isFetching && <p>Fetching...</p>}
+      <Button disabled={isFetching} onClick={() => refetch()}>
+        {isFetching ? "Refreshing..." : "Refresh"}
+      </Button>
+
       {keys && keys.length === 0 ? (
         <p>No keys found.</p>
       ) : (
