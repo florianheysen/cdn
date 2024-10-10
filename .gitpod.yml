@@ -1,2 +1,9 @@
 tasks:
-  - init: echo "init task"
+  - init: |
+      echo "Setting up AWS CLI..."
+      aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+      aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+      aws configure set region $AWS_REGION
+    command: |
+      echo "Starting the development server..."
+      npx sst dev
