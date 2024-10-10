@@ -13,4 +13,5 @@ tasks:
       aws configure set region $AWS_REGION
     command: |
       echo "Starting the development server..."
-      npx sst dev
+      pnpm install
+      npx sst dev --stage dev
