@@ -1,54 +1,44 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
-import { Button } from "./ui/button";
+import ImageMenu from "./image-menu";
 
-const fetchKeys = async () => {
-  const response = await fetch("/api/keys");
-  if (!response.ok) {
-    throw new Error("Erreur lors de la récupération des clés");
-  }
-  return response.json();
-};
-
-const ImageGallery = ({ bucketName }: { bucketName: string }) => {
-  const {
-    data: keys,
-    isLoading,
-    isFetching,
-    refetch,
-  } = useQuery({
-    queryKey: ["keys"],
-    queryFn: fetchKeys,
-  });
-
-  if (isLoading) return <p>Loading...</p>;
+const ImageGallery = ({
+  bucketName,
+  keys,
+}: {
+  bucketName: string;
+  keys: (string | undefined)[] | undefined;
+}) => {
   if (!keys) return <p>No keys found.</p>;
 
-  return (
-    <div>
-      <Button disabled={isFetching} onClick={() => refetch()}>
-        {isFetching ? "Refreshing..." : "Refresh"}
-      </Button>
+  const filteredKeys = keys?.filter((key): key is string => !!key);
 
-      {keys && keys.length === 0 ? (
-        <p>No keys found.</p>
-      ) : (
-        <ul>
-          {keys?.map((imageKey: string) => (
-            <li key={imageKey}>
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {filteredKeys.map((key) => (
+          <div
+            key={key}
+            id={key}
+            className="aspect-square relative overflow-hidden rounded-lg"
+          >
+            <ImageMenu id={key}>
               <Image
-                src={`https://${bucketName}.s3.us-east-1.amazonaws.com/${imageKey}`}
-                alt={imageKey}
-                style={{ width: "auto", height: "auto" }}
-                width={200}
-                height={200}
+                className="border rounded-lg"
+                src={`https://${bucketName}.s3.us-east-1.amazonaws.com/${key}`}
+                alt={key}
+                layout="fill"
+                objectFit="cover"
+                onError={(e) =>
+                  (e.currentTarget.src =
+                    "https://dummyimage.com/400x400/000/fff")
+                }
               />
-            </li>
-          ))}
-        </ul>
-      )}
+            </ImageMenu>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

@@ -1,13 +1,13 @@
 "use server";
 
 import { z } from "zod";
-import { actionClient } from "@/lib/action";
+import { action } from "@/lib/action";
 
 const schema = z.object({
   username: z.string().min(3).max(10),
 });
 
-export const greet = actionClient
+export const greet = action
   .schema(schema)
   .action(async ({ parsedInput: { username } }) => {
     return {

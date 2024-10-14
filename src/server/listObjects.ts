@@ -1,8 +1,9 @@
-import { ListObjectsCommand, S3Client } from "@aws-sdk/client-s3";
-import { NextResponse } from "next/server";
-import { Resource } from "sst";
+"use server";
 
-export async function GET() {
+import { Resource } from "sst";
+import { ListObjectsCommand, S3Client } from "@aws-sdk/client-s3";
+
+export const listObjects = async () => {
   const command = new ListObjectsCommand({
     Bucket: Resource.uploads.name,
   });
@@ -11,7 +12,5 @@ export async function GET() {
 
   const keys = data.Contents?.map((item) => item.Key);
 
-  return new NextResponse(JSON.stringify(keys), {
-    status: 200,
-  });
-}
+  return keys;
+};
